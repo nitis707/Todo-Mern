@@ -1,4 +1,4 @@
-import { CircleUserRound, FileCheck2, Menu, X } from "lucide-react";
+import { CircleUserRound, FileCheck, Menu, X } from "lucide-react";
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ModeToggle } from "./DarkMode";
@@ -13,14 +13,14 @@ const Navbar = () => {
       <div className="px-4 md:container md:mx-auto flex justify-between items-center">
         {/* Logo */}
         <Link to="/">
-          <span className="flex items-center gap-2 text-yellow-500 text-xl font-bold">
-            <FileCheck2 />
+          <span className="flex items-center gap-2 text-yellow-500 dark:text-primary text-xl font-bold">
+            <FileCheck />
             todo
           </span>
         </Link>
 
         {/* Desktop Menu */}
-        <ul className="hidden md:flex items-center gap-6 font-bold">
+        <ul className="hidden md:flex items-center gap-4 font-bold">
           <li>
             <Link to="/">Home</Link>
           </li>
@@ -31,13 +31,18 @@ const Navbar = () => {
             <Link to="/about">About Us</Link>
           </li>
           <li>
-            <Button onClick={() => navigate("/signup")}>Sign Up</Button>
+            <Button size="sm" onClick={() => navigate("/login")}>
+              Login
+            </Button>
           </li>
           <li>
-            <Button onClick={() => navigate("/login")}>Login</Button>
+            <Button size="sm" onClick={() => navigate("/signup")}>
+              Sign Up
+            </Button>
           </li>
+
           <li>
-            <Button>Log Out</Button>
+            <Button size="sm">Log Out</Button>
           </li>
           <li>
             <CircleUserRound />
@@ -64,8 +69,8 @@ const Navbar = () => {
       >
         <div className="p-4 flex justify-between items-center">
           <Link to="/" onClick={() => setMenuOpen(false)}>
-            <span className="flex items-center gap-2 text-yellow-500 text-xl font-bold">
-              <FileCheck2 />
+            <span className="flex items-center gap-2 text-yellow-600 text-xl font-bold">
+              <FileCheck />
               todo
             </span>
           </Link>
@@ -73,7 +78,7 @@ const Navbar = () => {
             <X size={24} />
           </button>
         </div>
-        <ul className="flex flex-col items-center gap-6 py-6 text-lg">
+        <ul className="flex flex-col items-center gap-4 py-4 text-l font-bold">
           <li>
             <Link to="/" onClick={() => setMenuOpen(false)}>
               Home

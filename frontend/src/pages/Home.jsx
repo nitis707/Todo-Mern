@@ -1,7 +1,10 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="h-[90vh] flex justify-center items-center">
       <div className="flex flex-col gap-4 text-center">
@@ -14,7 +17,7 @@ const Home = () => {
           <span>todo app. The world's #1 task manager app.</span>
         </p>
         <div className="">
-          <Button>Make Todo List</Button>
+          <Button onClick={() => navigate("/todo")}>Make Todo List</Button>
         </div>
       </div>
     </div>

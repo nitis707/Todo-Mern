@@ -8,6 +8,7 @@ import Footer from "./components/Footer";
 import Todo from "./pages/Todo";
 import SignUp from "./pages/SignUp";
 import Login from "./pages/Login";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
         </Routes>
       </div>
       <Footer />
+      <Toaster position="top-center" reverseOrder={false} />
     </Router>
   );
 }
