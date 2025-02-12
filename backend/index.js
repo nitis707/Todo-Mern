@@ -17,7 +17,7 @@ app.use(cors({
 }));
 
 app.get("/", (req, res) => {
-    res.send("Hello from localhost!");
+    res.send("Hello from backend!");
 })
 
 app.use("/api/v1", userRoute);
