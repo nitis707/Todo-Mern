@@ -12,7 +12,7 @@ connectDb();
 // default middleware
 app.use(express.json());
 app.use(cors({
-    origin: "https://todo-mern-frontend-ten.vercel.app/api/v1",
+    origin: "*",
     credentials: true
 }));
 
