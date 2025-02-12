@@ -3,9 +3,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import TodoCard from "./TodoCard";
 import toast from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import { authActions } from "@/store";
+import axios from "axios";
 
 const Todo = () => {
   const [showTextarea, setShowTextarea] = useState(false);
@@ -14,6 +17,7 @@ const Todo = () => {
     body: "",
   });
   const [tasks, setTasks] = useState([]);
+  let userId = sessionStorage.getItem("userId");
 
   const show = () => {
     setShowTextarea(true);
@@ -27,21 +31,51 @@ const Todo = () => {
     });
   };
 
-  const addTaskHandler = (e) => {
+  const addTaskHandler = async (e) => {
     e.preventDefault();
     if (!input.title || !input.body) {
-      toast.error("All fields are required!");
-      return;
+      return toast.error("All fields are required!");
     }
 
-    setTasks([...tasks, input]);
-    setInput({
-      title: "",
-      body: "",
-    });
-    toast.error("Your Task is not saved! Please login.");
-    toast.success("Task Added!");
+    if (userId) {
+      const response = await axios.post(
+        "http://localhost:8080/api/v2/addTask",
+        {
+          title: input.title,
+          body: input.body,
+          id: userId,
+        }
+      );
+
+      console.log(response.data);
+
+      setInput({
+        title: "",
+        body: "",
+      });
+
+      toast.success(response.data.message || "Task Added!");
+    } else {
+      setTasks((prevTasks) => [...prevTasks, input]);
+      setInput({
+        title: "",
+        body: "",
+      });
+
+      toast.error("Your Task is not saved! Please login.");
+    }
   };
+
+  useEffect(() => {
+    const fetch = async () => {
+      const response = await axios.get(
+        `http://localhost:8080/api/v2/fetchTask/${userId}`
+      );
+
+      setTasks(response.data.tasks);
+    };
+    fetch();
+  }, [addTaskHandler]);
 
   return (
     <div className="min-h-[90vh] py-4">

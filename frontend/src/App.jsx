@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import Home from "./pages/Home";
 import About from "./pages/About";
@@ -9,8 +9,20 @@ import Todo from "./pages/Todo";
 import SignUp from "./pages/SignUp";
 import Login from "./pages/Login";
 import { Toaster } from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import { authActions } from "@/store";
 
 function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const userId = sessionStorage.getItem("userId");
+
+    if (userId) {
+      dispatch(authActions.login());
+    }
+  }, []);
+
   return (
     <Router>
       <Navbar />

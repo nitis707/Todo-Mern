@@ -3,10 +3,20 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ModeToggle } from "./DarkMode";
 import { Link, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { authActions } from "@/store";
 
 const Navbar = () => {
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
+  const isLoggedIn = useSelector((state) => state.isLoggedIn);
+  const dispatch = useDispatch();
+
+  const logoutHandler = () => {
+    sessionStorage.clear("id");
+    dispatch(authActions.logout());
+  };
 
   return (
     <nav className="py-4 dark:bg-slate-900 bg-white text-foreground shadow-md">
@@ -30,23 +40,32 @@ const Navbar = () => {
           <li>
             <Link to="/about">About Us</Link>
           </li>
-          <li>
-            <Button size="sm" onClick={() => navigate("/login")}>
-              Login
-            </Button>
-          </li>
-          <li>
-            <Button size="sm" onClick={() => navigate("/signup")}>
-              Sign Up
-            </Button>
-          </li>
 
-          <li>
-            <Button size="sm">Log Out</Button>
-          </li>
-          <li>
-            <CircleUserRound />
-          </li>
+          {isLoggedIn ? (
+            <>
+              <li>
+                <CircleUserRound />
+              </li>
+              <li>
+                <Button onClick={logoutHandler} size="sm">
+                  Log Out
+                </Button>
+              </li>
+            </>
+          ) : (
+            <>
+              <li>
+                <Button size="sm" onClick={() => navigate("/login")}>
+                  Login
+                </Button>
+              </li>
+              <li>
+                <Button size="sm" onClick={() => navigate("/signup")}>
+                  Sign Up
+                </Button>
+              </li>
+            </>
+          )}
           <li>
             <ModeToggle />
           </li>
@@ -94,32 +113,42 @@ const Navbar = () => {
               About Us
             </Link>
           </li>
-          <li>
-            <Button
-              onClick={() => {
-                navigate("/signup");
-                setMenuOpen(false);
-              }}
-            >
-              Sign Up
-            </Button>
-          </li>
-          <li>
-            <Button
-              onClick={() => {
-                navigate("/login");
-                setMenuOpen(false);
-              }}
-            >
-              Login
-            </Button>
-          </li>
-          <li>
-            <Button>Log Out</Button>
-          </li>
-          <li>
-            <CircleUserRound />
-          </li>
+
+          {isLoggedIn ? (
+            <>
+              <li>
+                <CircleUserRound />
+              </li>
+              <li>
+                <Button>Log Out</Button>
+              </li>
+            </>
+          ) : (
+            <>
+              <li>
+                <Button
+                  onClick={() => {
+                    navigate("/login");
+                    setMenuOpen(false);
+                  }}
+                >
+                  Login
+                </Button>
+              </li>
+
+              <li>
+                <Button
+                  onClick={() => {
+                    navigate("/signup");
+                    setMenuOpen(false);
+                  }}
+                >
+                  Sign Up
+                </Button>
+              </li>
+            </>
+          )}
+
           <li>
             <ModeToggle />
           </li>

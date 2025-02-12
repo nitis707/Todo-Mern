@@ -4,9 +4,9 @@ import { addTask, deleteTask, fetchTasks, updateTask } from "../controllers/list
 const router = express.Router();
 
 router.route("/addTask").post(addTask);
+router.route("/fetchTask/:id").get(fetchTasks);
 router.route("/updateTask/:id").put(updateTask);
 router.route("/deleteTask/:id").delete(deleteTask);
-router.route("/fetchTask/:id").get(fetchTasks);
 
 
 export default router;

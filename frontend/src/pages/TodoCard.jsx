@@ -3,29 +3,22 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Edit, Trash2 } from "lucide-react";
 import React from "react";
 import toast from "react-hot-toast";
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import axios from "axios";
 
 const TodoCard = ({ tasks, setTasks }) => {
-  const updateHandler = () => {
-    toast.success("Task Updated!");
-  };
+  const deleteHandler = async (id) => {
+    try {
+      const response = await axios.delete(
+        `http://localhost:8080/api/v2/deleteTask/${id}`
+      );
 
-  const deleteHandler = (idx) => {
-    setTasks((prevTasks) => {
-      const updatedTasks = [...prevTasks]; // Create a shallow copy of the tasks array
-      updatedTasks.splice(idx, 1); // Remove the task at the given index
-      return updatedTasks; // Return the updated array to setTasks
-    });
-    toast.success("Task deleted!");
+      setTasks((prevTasks) => prevTasks.filter((task) => task._id !== id));
+
+      toast.success(response.data.message || "Task deleted!");
+    } catch (error) {
+      console.error("Error deleting task:", error);
+      toast.error(error.response?.data?.message || "Failed to delete task!");
+    }
   };
 
   return (
@@ -57,7 +50,7 @@ const TodoCard = ({ tasks, setTasks }) => {
                     </Button>
 
                     <Button
-                      onClick={() => deleteHandler(idx)}
+                      onClick={() => deleteHandler(item._id)}
                       size="sm"
                       variant="destructive"
                     >

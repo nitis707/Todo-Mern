@@ -3,7 +3,7 @@ import User from "../models/userModel.js";
 
 export const addTask = async (req, res) => {
     try {
-        const { title, body, email } = req.body;
+        const { title, body, id } = req.body;
 
         // Check for missing fields
         if (!title || !body) {
@@ -14,7 +14,7 @@ export const addTask = async (req, res) => {
         }
 
         // Find user by email
-        const existingUser = await User.findOne({ email });
+        const existingUser = await User.findById(id);
         if (!existingUser) {
             return res.status(404).json({
                 success: false,
@@ -99,28 +99,10 @@ export const updateTask = async (req, res) => {
 // Delete Task
 export const deleteTask = async (req, res) => {
     try {
-        const { email } = req.body;
-        const { id } = req.params; // Extract task ID from URL params
-
-        // Check if required fields are provided
-        if (!email) {
-            return res.status(400).json({
-                success: false,
-                message: "Email is required!"
-            });
-        }
-
-        // Check if the user exists
-        const existingUser = await User.findOne({ email });
-        if (!existingUser) {
-            return res.status(404).json({
-                success: false,
-                message: "User not found!"
-            });
-        }
+        const taskId = req.params.id; // Get ID from URL params
 
         // Find and delete the task
-        const deletedTask = await List.findByIdAndDelete(id);
+        const deletedTask = await List.findByIdAndDelete(taskId);
 
         if (!deletedTask) {
             return res.status(404).json({
@@ -129,24 +111,19 @@ export const deleteTask = async (req, res) => {
             });
         }
 
-        // Remove the task reference from the user's list array
-        existingUser.list = existingUser.list.filter(taskId => taskId.toString() !== id);
-        await existingUser.save();
+        // Remove task reference from user's list
+        await User.updateMany({ list: taskId }, { $pull: { list: taskId } });
 
-        res.status(200).json({
+        return res.status(200).json({
             success: true,
-            message: "Task deleted successfully!",
-            deletedTask
+            message: "Task deleted successfully!"
         });
-
     } catch (error) {
         console.error("Error deleting task:", error);
-        res.status(500).json({
-            success: false,
-            message: "Internal Server Error. Please try again later."
-        });
+        res.status(500).json({ success: false, message: "Internal Server Error" });
     }
 };
+
 
 // fetch list
 
