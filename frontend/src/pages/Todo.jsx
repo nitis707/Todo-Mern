@@ -29,15 +29,18 @@ const Todo = () => {
 
   const addTaskHandler = (e) => {
     e.preventDefault();
-    console.log(input);
+    if (!input.title || !input.body) {
+      toast.error("All fields are required!");
+      return;
+    }
 
     setTasks([...tasks, input]);
     setInput({
       title: "",
       body: "",
     });
+    toast.error("Your Task is not saved! Please login.");
     toast.success("Task Added!");
-    console.log(tasks);
   };
 
   return (
