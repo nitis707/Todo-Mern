@@ -11,7 +11,10 @@ connectDb();
 
 // default middleware
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+    origin: "https://todo-mern-frontend-ten.vercel.app",
+    credentials: true
+}));
 
 app.get("/", (req, res) => {
     res.send("Hello from localhost!");
