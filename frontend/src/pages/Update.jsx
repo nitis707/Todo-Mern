@@ -7,7 +7,7 @@ import React from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
-const Update = () => {
+const Update = ({ updateId, task, setTasks }) => {
   const navigate = useNavigate();
 
   const updateHandler = () => {
@@ -25,9 +25,9 @@ const Update = () => {
           <CardContent>
             <div className="space-y-2 pt-4">
               <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="title">Title</Label>
+                <Label htmlFor="titleUpdate">Title</Label>
                 <Input
-                  id="title"
+                  id="titleUpdate"
                   name="title"
                   //   value={input.title}
                   //   onChange={inputHandler}
@@ -37,9 +37,9 @@ const Update = () => {
               </div>
 
               <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="body">Body</Label>
+                <Label htmlFor="bodyUpdate">Body</Label>
                 <Textarea
-                  id="body"
+                  id="bodyUpdate"
                   name="body"
                   // value={input.body}
                   // onChange={inputHandler}

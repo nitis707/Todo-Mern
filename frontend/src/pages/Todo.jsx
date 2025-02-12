@@ -6,8 +6,6 @@ import { Textarea } from "@/components/ui/textarea";
 import React, { useEffect, useState } from "react";
 import TodoCard from "./TodoCard";
 import toast from "react-hot-toast";
-import { useDispatch } from "react-redux";
-import { authActions } from "@/store";
 import axios from "axios";
 
 const Todo = () => {
@@ -67,14 +65,16 @@ const Todo = () => {
   };
 
   useEffect(() => {
-    const fetch = async () => {
-      const response = await axios.get(
-        `http://localhost:8080/api/v2/fetchTask/${userId}`
-      );
+    if (userId) {
+      const fetch = async () => {
+        const response = await axios.get(
+          `http://localhost:8080/api/v2/fetchTask/${userId}`
+        );
 
-      setTasks(response.data.tasks);
-    };
-    fetch();
+        setTasks(response.data.tasks);
+      };
+      fetch();
+    }
   }, [addTaskHandler]);
 
   return (

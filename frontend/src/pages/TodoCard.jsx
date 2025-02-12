@@ -1,28 +1,36 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Edit, Trash2 } from "lucide-react";
-import React from "react";
+import React, { useState } from "react";
 import toast from "react-hot-toast";
 import axios from "axios";
+import Update from "./Update";
 
 const TodoCard = ({ tasks, setTasks }) => {
+  const [editIndex, setEditIndex] = useState(null);
+  const userId = sessionStorage.getItem("userId");
+
   const deleteHandler = async (id) => {
-    try {
-      const response = await axios.delete(
-        `http://localhost:8080/api/v2/deleteTask/${id}`
-      );
+    if (userId) {
+      try {
+        const response = await axios.delete(
+          `http://localhost:8080/api/v2/deleteTask/${id}`
+        );
 
-      setTasks((prevTasks) => prevTasks.filter((task) => task._id !== id));
+        setTasks((prevTasks) => prevTasks.filter((task) => task._id !== id));
 
-      toast.success(response.data.message || "Task deleted!");
-    } catch (error) {
-      console.error("Error deleting task:", error);
-      toast.error(error.response?.data?.message || "Failed to delete task!");
+        toast.success(response.data.message || "Task deleted!");
+      } catch (error) {
+        console.error("Error deleting task:", error);
+        toast.error(error.response?.data?.message || "Failed to delete task!");
+      }
+    } else {
+      return toast.error("Please login first!");
     }
   };
 
   return (
-    <>
+    <div className="flex flex-col gap-2">
       <Card className="w-[350px] sm:w-[650px]">
         <CardHeader>
           <CardTitle>Your Todos</CardTitle>
@@ -45,7 +53,7 @@ const TodoCard = ({ tasks, setTasks }) => {
                   </div>
 
                   <div className="space-x-4">
-                    <Button size="sm">
+                    <Button size="sm" onClick={() => setEditIndex(idx)}>
                       <Edit />
                     </Button>
 
@@ -63,7 +71,11 @@ const TodoCard = ({ tasks, setTasks }) => {
           )}
         </CardContent>
       </Card>
-    </>
+
+      <div className="flex justify-center">
+        <Update updateId={editIndex} task={tasks} setTasks={setTasks} />
+      </div>
+    </div>
   );
 };
 

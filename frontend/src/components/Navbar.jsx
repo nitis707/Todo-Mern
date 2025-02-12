@@ -14,7 +14,7 @@ const Navbar = () => {
   const dispatch = useDispatch();
 
   const logoutHandler = () => {
-    sessionStorage.clear("id");
+    sessionStorage.clear("userId");
     dispatch(authActions.logout());
   };
 

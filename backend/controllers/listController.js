@@ -101,6 +101,10 @@ export const deleteTask = async (req, res) => {
     try {
         const taskId = req.params.id; // Get ID from URL params
 
+        if (!taskId) {
+            return res.status(400).json({ success: false, message: "Login to delete Task!" });
+        }
+
         // Find and delete the task
         const deletedTask = await List.findByIdAndDelete(taskId);
 
