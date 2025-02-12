@@ -45,7 +45,7 @@ const Update = ({ updateId, task, setTasks, onClose }) => {
 
     try {
       const response = await axios.put(
-        `${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/updateTask/${
+        `${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/api/v1/updateTask/${
           task[updateId]._id
         }`,
         {

@@ -14,7 +14,9 @@ const TodoCard = ({ tasks, setTasks }) => {
     if (userId) {
       try {
         const response = await axios.delete(
-          `${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/deleteTask/${id}`
+          `${
+            import.meta.env.VITE_REACT_APP_BACKEND_BASEURL
+          }/api/v1/deleteTask/${id}`
         );
 
         setTasks((prevTasks) => prevTasks.filter((task) => task._id !== id));

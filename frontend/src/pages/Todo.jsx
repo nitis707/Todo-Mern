@@ -37,7 +37,7 @@ const Todo = () => {
 
     if (userId) {
       const response = await axios.post(
-        `${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/addTask`,
+        `${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/api/v1/addTask`,
         {
           title: input.title,
           body: input.body,
@@ -68,7 +68,7 @@ const Todo = () => {
         const response = await axios.get(
           `${
             import.meta.env.VITE_REACT_APP_BACKEND_BASEURL
-          }/fetchTask/${userId}`
+          }/api/v1/fetchTask/${userId}`
         );
 
         setTasks(response.data.tasks);

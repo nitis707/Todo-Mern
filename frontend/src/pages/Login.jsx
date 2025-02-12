@@ -31,7 +31,7 @@ const Login = () => {
 
     try {
       const response = await axios.post(
-        `${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/login`,
+        `${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/api/v1/login`,
         input
       );
 
