@@ -47,8 +47,8 @@ export const addTask = async (req, res) => {
 
 export const updateTask = async (req, res) => {
     try {
-        const { title, body, email } = req.body;
-        const { id } = req.params; // Extract task ID from URL params
+        const { title, body, id: userId } = req.body;  // Changed email to userId
+        const { id } = req.params; // Task ID from URL params
 
         // Check for missing fields
         if (!title || !body) {
@@ -59,7 +59,7 @@ export const updateTask = async (req, res) => {
         }
 
         // Check if user exists
-        const existingUser = await User.findOne({ email });
+        const existingUser = await User.findById(userId);  // Changed to findById
         if (!existingUser) {
             return res.status(404).json({
                 success: false,
@@ -71,7 +71,7 @@ export const updateTask = async (req, res) => {
         const updatedTask = await List.findByIdAndUpdate(
             id,
             { title, body },
-            { new: true, runValidators: true } // Return updated document & apply validation
+            { new: true, runValidators: true }
         );
 
         if (!updatedTask) {

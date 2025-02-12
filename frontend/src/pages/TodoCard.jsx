@@ -14,7 +14,7 @@ const TodoCard = ({ tasks, setTasks }) => {
     if (userId) {
       try {
         const response = await axios.delete(
-          `http://localhost:8080/api/v2/deleteTask/${id}`
+          `${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/deleteTask/${id}`
         );
 
         setTasks((prevTasks) => prevTasks.filter((task) => task._id !== id));
@@ -29,8 +29,23 @@ const TodoCard = ({ tasks, setTasks }) => {
     }
   };
 
+  const handleEdit = (idx) => {
+    if (!userId) {
+      return toast.error("Please login first!");
+    }
+    setEditIndex(editIndex === idx ? null : idx);
+  };
+
   return (
     <div className="flex flex-col gap-2">
+      {editIndex !== null && (
+        <Update
+          updateId={editIndex}
+          task={tasks}
+          setTasks={setTasks}
+          onClose={() => setEditIndex(null)} // Add this
+        />
+      )}
       <Card className="w-[350px] sm:w-[650px]">
         <CardHeader>
           <CardTitle>Your Todos</CardTitle>
@@ -53,7 +68,7 @@ const TodoCard = ({ tasks, setTasks }) => {
                   </div>
 
                   <div className="space-x-4">
-                    <Button size="sm" onClick={() => setEditIndex(idx)}>
+                    <Button size="sm" onClick={() => handleEdit(idx)}>
                       <Edit />
                     </Button>
 
@@ -71,10 +86,6 @@ const TodoCard = ({ tasks, setTasks }) => {
           )}
         </CardContent>
       </Card>
-
-      <div className="flex justify-center">
-        <Update updateId={editIndex} task={tasks} setTasks={setTasks} />
-      </div>
     </div>
   );
 };

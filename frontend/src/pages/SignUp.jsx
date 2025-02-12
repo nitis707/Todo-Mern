@@ -29,11 +29,9 @@ const SignUp = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/v1/register",
+        `${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/register`,
         input
       );
-
-      console.log(response.data);
 
       setInput({ username: "", email: "", password: "" });
 

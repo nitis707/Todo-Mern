@@ -13,8 +13,11 @@ const Navbar = () => {
   const isLoggedIn = useSelector((state) => state.isLoggedIn);
   const dispatch = useDispatch();
 
+  const username = sessionStorage.getItem("username");
+
   const logoutHandler = () => {
     sessionStorage.clear("userId");
+    sessionStorage.clear("username");
     dispatch(authActions.logout());
   };
 
@@ -23,7 +26,7 @@ const Navbar = () => {
       <div className="px-4 md:container md:mx-auto flex justify-between items-center">
         {/* Logo */}
         <Link to="/">
-          <span className="flex items-center gap-2 text-yellow-500 dark:text-primary text-xl font-bold">
+          <span className="flex items-center gap-2 text-yellow-500 dark:text-primary text-2xl font-bold">
             <FileCheck />
             todo
           </span>
@@ -43,8 +46,9 @@ const Navbar = () => {
 
           {isLoggedIn ? (
             <>
-              <li>
+              <li className="flex gap-1 items-center justify-center font-normal">
                 <CircleUserRound />
+                <span>{username}</span>
               </li>
               <li>
                 <Button onClick={logoutHandler} size="sm">
@@ -72,6 +76,9 @@ const Navbar = () => {
         </ul>
 
         {/* Mobile Menu Button */}
+        <div className="md:hidden text-foreground">
+          <ModeToggle />
+        </div>
         <button
           className="md:hidden text-foreground"
           onClick={() => setMenuOpen(!menuOpen)}
@@ -80,7 +87,7 @@ const Navbar = () => {
         </button>
       </div>
 
-      {/* Mobile Menu Dropdown */}
+      {/* Mobile Menu sidebar */}
       <div
         className={`md:hidden fixed top-0 left-0 w-1/2 h-full bg-white dark:bg-slate-900 transition-transform duration-300 ${
           menuOpen ? "translate-x-0" : "-translate-x-full"
@@ -88,7 +95,7 @@ const Navbar = () => {
       >
         <div className="p-4 flex justify-between items-center">
           <Link to="/" onClick={() => setMenuOpen(false)}>
-            <span className="flex items-center gap-2 text-yellow-600 text-xl font-bold">
+            <span className="flex items-center gap-2 text-yellow-500 text-2xl font-bold">
               <FileCheck />
               todo
             </span>
@@ -97,7 +104,7 @@ const Navbar = () => {
             <X size={24} />
           </button>
         </div>
-        <ul className="flex flex-col items-center gap-4 py-4 text-l font-bold">
+        <ul className="flex flex-col ps-5 gap-3 py-4 text-l font-bold">
           <li>
             <Link to="/" onClick={() => setMenuOpen(false)}>
               Home
@@ -116,42 +123,33 @@ const Navbar = () => {
 
           {isLoggedIn ? (
             <>
-              <li>
+              <li onClick={logoutHandler}>LogOut</li>
+              <li className="flex gap-1 items-center font-normal">
                 <CircleUserRound />
-              </li>
-              <li>
-                <Button>Log Out</Button>
+                <span>{username}</span>
               </li>
             </>
           ) : (
             <>
-              <li>
-                <Button
-                  onClick={() => {
-                    navigate("/login");
-                    setMenuOpen(false);
-                  }}
-                >
-                  Login
-                </Button>
+              <li
+                onClick={() => {
+                  navigate("/login");
+                  setMenuOpen(false);
+                }}
+              >
+                Login
               </li>
 
-              <li>
-                <Button
-                  onClick={() => {
-                    navigate("/signup");
-                    setMenuOpen(false);
-                  }}
-                >
-                  Sign Up
-                </Button>
+              <li
+                onClick={() => {
+                  navigate("/signup");
+                  setMenuOpen(false);
+                }}
+              >
+                Sign Up
               </li>
             </>
           )}
-
-          <li>
-            <ModeToggle />
-          </li>
         </ul>
       </div>
     </nav>

@@ -37,15 +37,13 @@ const Todo = () => {
 
     if (userId) {
       const response = await axios.post(
-        "http://localhost:8080/api/v2/addTask",
+        `${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/addTask`,
         {
           title: input.title,
           body: input.body,
           id: userId,
         }
       );
-
-      console.log(response.data);
 
       setInput({
         title: "",
@@ -68,7 +66,9 @@ const Todo = () => {
     if (userId) {
       const fetch = async () => {
         const response = await axios.get(
-          `http://localhost:8080/api/v2/fetchTask/${userId}`
+          `${
+            import.meta.env.VITE_REACT_APP_BACKEND_BASEURL
+          }/fetchTask/${userId}`
         );
 
         setTasks(response.data.tasks);
@@ -91,19 +91,19 @@ const Todo = () => {
                   value={input.title}
                   onChange={inputHandler}
                   type="text"
-                  placeholder="Enter your title"
+                  placeholder="Enter title"
                   onClick={show}
                 />
               </div>
               {showTextarea && (
                 <div className="flex flex-col space-y-1.5">
-                  <Label htmlFor="body">Body</Label>
+                  <Label htmlFor="body">Description</Label>
                   <Textarea
                     id="body"
                     name="body"
                     value={input.body}
                     onChange={inputHandler}
-                    placeholder="Enter Body"
+                    placeholder="Enter Description"
                   />
                 </div>
               )}

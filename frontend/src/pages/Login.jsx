@@ -31,13 +31,13 @@ const Login = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/v1/login",
+        `${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/login`,
         input
       );
 
       sessionStorage.setItem("userId", response.data.user.id);
+      sessionStorage.setItem("username", response.data.user.username);
       dispatch(authActions.login());
-      console.log(response.data.user.id);
 
       setInput({ email: "", password: "" });
 
